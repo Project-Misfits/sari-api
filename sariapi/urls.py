@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from core.views import ProductView 
+from core.views import ProductList, ProductsDetail
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -38,7 +38,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('powerstage/', admin.site.urls),
-    path('products/', ProductView.as_view(), name='products'),
+    path('products/', ProductList.as_view(), name='products-list'),
+    path('products/<int:pk>/', ProductsDetail.as_view(), name='product-detail'),
 
     # swagger stuff
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
