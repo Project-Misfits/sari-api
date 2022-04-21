@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.http import Http404
 
 from .models import Products
 from .serializers import ProductsSerializer
@@ -16,10 +17,6 @@ class ProductList(APIView):
         serialized_data = ProductsSerializer(qs, many=True)
         return Response(serialized_data.data)
 
-    def post(self, request, *args, **kwargs):
-    """
-        post: add new product
-    """
     def post(self, request, format=None):
         data = request.data
         serialized_data = ProductsSerializer(data=data)
@@ -45,12 +42,12 @@ class ProductsDetail(APIView):
             return Products.objects.get(pk=pk)
         except Products.DoesNotExist:
             raise Http404
-    
+
     def get(self, request, pk, format=None):
         qs = self.get_object(pk)
         serialized_data = ProductsSerializer(qs)
         return Response(serialized_data.data)
-    
+
     def put(self, request, pk, format=None):
         qs = self.get_object(pk)
         serialized_data = ProductsSerializer(qs, data=request.data)
@@ -58,7 +55,7 @@ class ProductsDetail(APIView):
             serialized_data.save()
             return Response(serialized_data.data)
         return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, pk, format=None):
         qs = self.get_object(pk)
         qs.delete()
