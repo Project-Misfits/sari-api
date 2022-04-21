@@ -13,7 +13,7 @@ class ProductView(APIView):
         qs = Products.objects.all()
         serialized_data = ProductsSerializer(qs, many=True)
         return Response(serialized_data.data)
-    
+
     def post(self, request, *args, **kwargs):
         data = request.data
         serialized_data = ProductsSerializer(data=data)
