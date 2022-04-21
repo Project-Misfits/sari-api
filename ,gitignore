@@ -1,0 +1,11 @@
+.vscode
+.DS_Store
+*.pyc
+.cache
+.direnv
+.env
+.venv
+.idea
+venv
+postgres-data/
+redis-data/
