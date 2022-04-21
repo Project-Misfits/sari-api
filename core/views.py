@@ -15,6 +15,8 @@ class ProductList(APIView):
         qs = Products.objects.all()
         serialized_data = ProductsSerializer(qs, many=True)
         return Response(serialized_data.data)
+
+    def post(self, request, *args, **kwargs):
     """
         post: add new product
     """
