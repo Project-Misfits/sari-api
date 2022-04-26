@@ -12,5 +12,5 @@ version 1.0
 * python manage.py runserver
 
 ### Testing
-- Coding Style
+- Coding Style\
 [PEP8](https://peps.python.org/pep-0008/ "PEP8") is enforced for coding style using Flake8. To check for coding style errors simply use the command `flake8` while inside the root folder.
