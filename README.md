@@ -7,8 +7,8 @@ version 1.0
 * Install dependencies listed in requirements.txt with command 
 `pip install -r requirements.txt`
 * Rename `sari-api/.env.example` to `sari-api/.env` and update settings
-* python makemigrations
-* python migrate
+* python manage.py makemigrations
+* python manage.py migrate
 * python manage.py runserver
 
 ### Testing
