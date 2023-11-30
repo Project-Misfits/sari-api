@@ -1,0 +1,86 @@
+services:
+  db:
+    image: postgres:16.1-alpine3.18
+    restart: always
+    environment:
+      - POSTGRES_DB=sari_api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  nginx:
+    build: .deploy/nginx
+    ports:
+      - "1337:80"
+    volumes:
+      - ./static:/app/static
+      - ./media:/app/media
+    links:
+      - "web:sariweb"
+    depends_on:
+      - web
+    restart: "on-failure"
+    networks:
+      - app-network
+
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py wait_for_db && python manage.py makemigrations --merge && python manage.py migrate && python manage.py loaddata seed.dev.json && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    environment:
+      - POSTGRES_DB=sari_api
+      - POSTGRES_HOST=saridb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - EMAIL_HOST=smtp.mailtrap.io
+      - EMAIL_HOST_USER=556976f9bfe275
+      - EMAIL_HOST_PASSWORD=5167fdebdaa446
+      - EMAIL_PORT=587
+      - API_URL=http://localhost:8000
+      - APP_URL=http://localhost:3000
+      - APP_ENV=local
+    volumes:
+      - ./:/app
+    links:
+      - "db:saridb"
+      - "broadcast:scout-broadcast"
+      - "asset:scout-asset"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: "on-failure"
+
+  broadcast:
+    image: "redis:latest"
+    ports:
+      - "8001:8000"
+    environment:
+      - REDIS_HOST=sariredis
+      - REDIS_PORT=6379
+    links:
+      - "cache:sariredis"
+    depends_on:
+      - cache
+    deploy:
+      resources:
+        limits:
+          memory: "1G"
+          cpus: "1"
+    networks:
+      - "app-network"
+
+networks:
+  app-network:
+    driver: "bridge"
