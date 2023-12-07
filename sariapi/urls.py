@@ -25,7 +25,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Sari API",
         default_version='v1',
-        description="API for convenience store in PH",
+        description="API for convenience stores in PH",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="jrldtlld@gmail.com"),
         license=openapi.License(name="BSD License"),
