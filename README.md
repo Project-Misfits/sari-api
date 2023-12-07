@@ -1,16 +1,30 @@
-## Sari-sari Store Backend API
-version 1.0
+# Spacesium Scout API
+Django powered API
 
-### Running locally
-- Requires python 3.X
+## Development
+### Requrements
+- Docker
+- Git
+- DBMS (dbeaver,.. etc)
 
-* Install dependencies listed in requirements.txt with command 
-`pip install -r requirements.txt`
-* Rename `sari-api/.env.example` to `sari-api/.env` and update settings
-* python manage.py makemigrations
-* python manage.py migrate
-* python manage.py runserver
-
-### Testing
-- Coding Style\
-[PEP8](https://peps.python.org/pep-0008/ "PEP8") is enforced for coding style using Flake8. To check for coding style errors simply use the command `flake8` while inside the root folder.
+### Bulding the image
+```bash
+docker compose build web
+```
+### Starting server
+```bash
+docker compose up web
+```
+### Creating super user
+```bash
+docker compose run --rm web python manage.py createsuperuser
+```
+### Migrations
+Generate migration files
+```bash
+docker compose run --rm web python manage.py makemigrations
+```
+Run migration
+```bash
+docker compose run --rm web python manage.py migrate
+```
