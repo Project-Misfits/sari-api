@@ -1,6 +1,6 @@
-FROM amd64/ubuntu:20.04 as base-image
+FROM ubuntu:20.04 as base-image
 
-ENV TZ=Australia/Sydney
+ENV TZ=UTC
 ENV DEBIAN_FRONTEND=nointeractive
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -35,6 +35,10 @@ WORKDIR /app
 RUN pip3 install gunicorn
 
 RUN pip3 install -r requirements.txt
+
+RUN pip install gunicorn
+
+RUN pip install -r requirements.txt
 
 FROM deps as final
 

@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16.1-alpine3.18
+    image: postgres:latest
     restart: always
     environment:
       - POSTGRES_DB=sari_api
@@ -32,7 +32,7 @@ services:
   web:
     build: .
     command: >
-      sh -c "python manage.py wait_for_db && python manage.py makemigrations --merge && python manage.py migrate && python manage.py loaddata seed.dev.json && python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py wait_for_db && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     expose:
@@ -54,32 +54,18 @@ services:
       - ./:/app
     links:
       - "db:saridb"
-      - "broadcast:scout-broadcast"
-      - "asset:scout-asset"
     depends_on:
       - db
     networks:
       - app-network
     restart: "on-failure"
 
-  broadcast:
-    image: "redis:latest"
-    ports:
-      - "8001:8000"
-    environment:
-      - REDIS_HOST=sariredis
-      - REDIS_PORT=6379
-    links:
-      - "cache:sariredis"
-    depends_on:
-      - cache
-    deploy:
-      resources:
-        limits:
-          memory: "1G"
-          cpus: "1"
-    networks:
-      - "app-network"
+  # cache:
+  #   image: "redis:6.2.7"
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - "app-network"
 
 networks:
   app-network:
