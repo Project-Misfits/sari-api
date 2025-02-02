@@ -1,4 +1,4 @@
-# Spacesium Scout API
+# Sari API
 Django powered API
 
 ## Development
