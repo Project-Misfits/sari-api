@@ -14,18 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
 
+from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import permissions
+
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+from oauth2_provider import urls as oauth2_urls
 
 schema_view = get_schema_view(
     openapi.Info(
         title="Sari API",
         default_version='v1',
-        description="API for convenience stores in PH",
+        description="API for small/micro cafe/restaurant in PH",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="jrldtlld@gmail.com"),
         license=openapi.License(name="BSD License"),
@@ -35,12 +38,15 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    # admin
     path('powerstage/', admin.site.urls),
-
+    # auth2
+    path('o/', include(oauth2_urls), name='oauth2_provider'),
     # swagger stuff
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api.json/', schema_view.without_ui(cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
