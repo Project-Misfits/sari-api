@@ -47,6 +47,7 @@ swagger_settings = {
 
 urlpatterns = [
     path('powerstage/', admin.site.urls),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('user/', include('users.urls')),
     # swagger stuff
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

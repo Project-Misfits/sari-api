@@ -13,12 +13,13 @@ class UserManager(BaseUserManager):
             raise ValueError('User should have an email address.')
 
         user = self.model(email=self.normalize_email(email).lower(), first_name=first_name, last_name=last_name)
-        if group_name in ALLOWED_GROUPS:
-            group, created = Group.objects.get_or_create(name=group_name)
-            user.groups.add(group)
         user.set_password(password)
         user.is_active = False
         user.save(using=self._db)
+        if group_name in ALLOWED_GROUPS:
+            group, created = Group.objects.get_or_create(name=group_name)
+            user.groups.add(group)
+            user.save()
         return user
 
     def create_superuser(self, email, first_name, last_name, password, group_name='admin'):
@@ -26,10 +27,11 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
+        user.save(using=self._db)
         if group_name in ALLOWED_GROUPS:
             group, created = Group.objects.get_or_create(name=group_name)
             user.groups.add(group)
-        user.save(using=self._db)
+            user.save()
         return user
 
 
@@ -40,9 +42,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    avatar = models.CharField(max_length=255, blank=True, null=True)
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    avatar = models.CharField(max_length=255, blank=True, null=True)
+    deleted_on = models.DateTimeField(blank=True, null=True, default=None)
 
     objects = UserManager()
 

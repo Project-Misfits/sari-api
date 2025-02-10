@@ -13,13 +13,13 @@ from .serializers import (
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
-    # @swagger_auto_schema(
-    #     responses={
-    #         status.HTTP_200_OK: CustomTokenObtainPairSerializer,
-    #     }
-    # )
-    # def post(self, request, *args, **kwargs):
-    #     return super().post(request, *args, **kwargs)
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: CustomTokenObtainPairSerializer,
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 
 class RegisterApiView(viewsets.ModelViewSet):
@@ -28,6 +28,11 @@ class RegisterApiView(viewsets.ModelViewSet):
 
     http_method_names = ['post', 'option']
 
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: RegistrationSerializer,
+        }
+    )
     def create(self, request, *args, **kwargs):
         _serializer = self.serializer_class(data=request.data)
         if _serializer.is_valid():
