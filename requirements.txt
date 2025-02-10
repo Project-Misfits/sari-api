@@ -1,8 +1,38 @@
-django
-flake8
-djangorestframework
-python-dotenv
-dj-rest-auth
-djangorestframework-simplejwt
-drf-yasg
-psycopg2-binary
+asgiref==3.8.1
+backports.zoneinfo==0.2.1
+Brotli @ file:///croot/brotli-split_1714483155106/work
+certifi @ file:///croot/certifi_1725551672989/work/certifi
+cffi @ file:///croot/cffi_1726856441404/work
+charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+conda==4.12.0
+conda-package-handling @ file:///tmp/build/80754af9/conda-package-handling_1649087926789/work
+cryptography @ file:///croot/cryptography_1724940562255/work
+dj-rest-auth==7.0.1
+Django==4.2.19
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+drf-yasg==1.21.8
+flake8==7.1.1
+gunicorn==23.0.0
+idna @ file:///croot/idna_1714398848350/work
+inflection==0.5.1
+mccabe==0.7.0
+packaging==24.2
+psycopg2-binary==2.9.10
+pycodestyle==2.12.1
+pycosat @ file:///croot/pycosat_1714510623388/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pyflakes==3.2.0
+PyJWT==2.9.0
+pyOpenSSL @ file:///croot/pyopenssl_1723651579422/work
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305779399/work
+python-dotenv==1.0.1
+pytz==2025.1
+PyYAML==6.0.2
+requests @ file:///croot/requests_1721410876868/work
+ruamel-yaml-conda @ file:///tmp/build/80754af9/ruamel_yaml_1616016699510/work
+sqlparse==0.5.3
+tqdm @ file:///croot/tqdm_1724853939799/work
+typing_extensions==4.12.2
+uritemplate==4.1.1
+urllib3 @ file:///croot/urllib3_1727769808118/work
