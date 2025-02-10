@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(email=self.normalize_email(email).lower(), first_name=first_name, last_name=last_name)
         user.set_password(password)
-        user.is_active = False
+        user.is_active = True
         user.save(using=self._db)
         if group_name in ALLOWED_GROUPS:
             group, created = Group.objects.get_or_create(name=group_name)
