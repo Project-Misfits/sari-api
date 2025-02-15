@@ -34,17 +34,6 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-swagger_settings = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-            "description": "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
-        }
-    },
-}
-
 urlpatterns = [
     path('powerstage/', admin.site.urls),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
