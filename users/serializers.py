@@ -5,6 +5,8 @@ from django.core import exceptions
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from dj_rest_auth.serializers import UserDetailsSerializer
+
 from .models import User
 
 
@@ -76,3 +78,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if data.get('password') != data.get('confirm_password'):
             raise serializers.ValidationError("Password does not match")
         return data
+
+
+class CustomUserDetailSerializer(UserDetailsSerializer):
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name",)  # Add or remove fields
