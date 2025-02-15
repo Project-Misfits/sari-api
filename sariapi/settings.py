@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'core',
     'users',
+    'stores',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +153,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailSerializer",
+}
+
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
@@ -187,7 +194,8 @@ ADMIN_URL = 'powerstage/login/'
 
 
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
+    "USE_SESSION_AUTH": False,
+    "PERSIST_AUTHORIZATION": True,
     "SECURITY_DEFINITIONS": {
         "Bearer": {
             "type": "apiKey",
