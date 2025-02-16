@@ -17,6 +17,7 @@ class StoreApiView(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
         qs.deleted_on = timezone.now()
+        qs.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -29,4 +30,5 @@ class StoreTableApiView(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
         qs.deleted_on = timezone.now()
+        qs.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
