@@ -84,4 +84,4 @@ class CustomUserDetailSerializer(UserDetailsSerializer):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name",)  # Add or remove fields
+        fields = ("id", "first_name", "last_name",)  # Add or remove fields
