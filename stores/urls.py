@@ -6,8 +6,8 @@ from .views import StoreApiView, StoreTableApiView
 
 
 router = SimpleRouter()
-router.register(r'', StoreApiView, basename='store')
 router.register(r'store-table', StoreTableApiView, basename='store-table')
+router.register(r'', StoreApiView, basename='store')
 
 
 urlpatterns = [

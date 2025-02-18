@@ -4,7 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Store
+from .models import Store, StoreTable
 from .serializers import StoreSerializer, StoreTableSerializer
 
 
@@ -25,7 +25,7 @@ class StoreTableApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = StoreTableSerializer
 
-    queryset = Store.objects.filter(deleted_on=None)
+    queryset = StoreTable.objects.filter(deleted_on=None)
 
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
