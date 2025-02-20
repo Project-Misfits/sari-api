@@ -5,13 +5,6 @@ from .models import Store, StoreTable
 from .utils import base64_qr_code
 
 
-class StoreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Store
-        fields = '__all__'
-        read_only_fields = ['deleted_on']
-
-
 class StoreTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = StoreTable
@@ -24,3 +17,13 @@ class StoreTableSerializer(serializers.ModelSerializer):
         store_data.qr_code_base64 = base64_qr_code(store_data)
         store_data.save()
         return store_data
+
+
+class StoreSerializer(serializers.ModelSerializer):
+    tables = StoreTableSerializer(many=True, source='storetable_set')
+
+    class Meta:
+        model = Store
+        fields = '__all__'
+        include = ('tables',)
+        read_only_fields = ['deleted_on']
