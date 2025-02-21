@@ -13,7 +13,6 @@ class StoreTableSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         store_data = StoreTable(**validated_data)
-
         store_data.qr_code_base64 = base64_qr_code(store_data)
         store_data.save()
         return store_data
@@ -27,3 +26,19 @@ class StoreSerializer(serializers.ModelSerializer):
         fields = '__all__'
         include = ('tables',)
         read_only_fields = ['deleted_on']
+
+
+
+class GenerateTableQRCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StoreTable
+        fields = '__all__'
+        read_only_fields = ['deleted_on']
+
+    def update(self, instance, validated_data):
+        try:
+            validated_data['qr_code_base64'] = base64_qr_code(instance)
+        except Exception as e:
+            print(e)
+            pass
+        return super().update(instance, validated_data)

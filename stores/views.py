@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Store, StoreTable
-from .serializers import StoreSerializer, StoreTableSerializer
+from .serializers import StoreSerializer, StoreTableSerializer, GenerateTableQRCodeSerializer
 
 
 class StoreApiView(viewsets.ModelViewSet):
@@ -32,3 +32,9 @@ class StoreTableApiView(viewsets.ModelViewSet):
         qs.deleted_on = timezone.now()
         qs.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class GenerateTableQRCodeApiView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = GenerateTableQRCodeSerializer
+    allowed_method = ['PATCH', 'OPTION']
