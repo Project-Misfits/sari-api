@@ -28,7 +28,6 @@ class StoreSerializer(serializers.ModelSerializer):
         read_only_fields = ['deleted_on']
 
 
-
 class GenerateTableQRCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = StoreTable
