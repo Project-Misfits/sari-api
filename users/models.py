@@ -8,11 +8,16 @@ ALLOWED_GROUPS = ['admin', 'user', 'manager', 'owner']
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None, group_name='user'):
+    def create_user(self, email, first_name, last_name, username, password=None, group_name='user'):
         if not email:
             raise ValueError('User should have an email address.')
 
-        user = self.model(email=self.normalize_email(email).lower(), first_name=first_name, last_name=last_name)
+        user = self.model(
+            email=self.normalize_email(email).lower(),
+            username=username,
+            first_name=first_name,
+            last_name=last_name
+        )
         user.set_password(password)
         user.is_active = True
         user.save(using=self._db)
@@ -23,7 +28,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, first_name, last_name, password, group_name='admin'):
-        user = self.create_user(email.lower(), first_name, last_name, password)
+        user = self.create_user(email.lower(), first_name, last_name, f'admin-{uuid.uuid4()}', password)
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
