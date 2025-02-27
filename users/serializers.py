@@ -15,7 +15,7 @@ from .models import User
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = User.USERNAME_FIELD
 
-    def is_valid_email(payload):
+    def is_valid_email(self, payload):
         validator = EmailValidator()
         try:
             validator(payload)
@@ -25,27 +25,26 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         self.context.get("request")
-        password = None
 
         val = attrs.get("email", None)
         is_email = self.is_valid_email(val)
-        print(val)
-        print(is_email)
+
         try:
             if is_email:
                 user_instance = User.objects.get(email=val.lower())
             else:
-                user_instance = User.objects.get(username=val)
+                user_instance = User.objects.get(username=val.lower())
+                attrs["email"] = user_instance.email
         except User.DoesNotExist:
             raise serializers.ValidationError("Invalid email or password.")
 
-        user = authenticate(email=attrs["email"].lower(), password=password)
+        user = authenticate(email=user_instance.email, password=attrs["password"])
+
         if not user_instance.is_active:
             raise serializers.ValidationError("Account is not active, check your inbox for the activation email.")
         if not user:
             raise serializers.ValidationError("Invalid email or password.")
 
-        attrs["password"] = password
         data = super().validate(attrs)
         return data
 
