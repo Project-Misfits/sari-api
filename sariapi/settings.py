@@ -34,6 +34,8 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = "users.User"
 
+APP_URL = os.environ.get('APP_URL', 'localhost:3000')
+
 # Application definition
 
 INSTALLED_APPS = [

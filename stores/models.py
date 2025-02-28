@@ -6,7 +6,7 @@ from users.models import User
 
 class Store(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -19,7 +19,7 @@ class Store(models.Model):
 class StoreTable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
     qr_code_base64 = models.TextField(blank=True, null=True)
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
