@@ -5,9 +5,8 @@ ARG DEBIAN_FRONTEND=nointeractive
 ENV PYTHONBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-RUN apt-get update && apt-get upgrade -y && apt-get install build-essential \
-    wget make unzip curl gcc git libxt6 libdbus-1-3 libdbus-1-dev libssl-dev \
-    libffi-dev libpq-dev -y
+RUN apt-get update && apt-get upgrade -y && apt-get install wget curl git gcc make unzip libssl-dev libffi-dev libpq-dev \
+    -y
 
 # install uv (https://docs.astral.sh/uv/) instead of conda
 RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.6.3/uv-installer.sh | sh

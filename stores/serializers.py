@@ -19,7 +19,7 @@ class StoreTableSerializer(serializers.ModelSerializer):
 
 
 class StoreSerializer(serializers.ModelSerializer):
-    tables = StoreTableSerializer(many=True, source='storetable_set')
+    tables = StoreTableSerializer(many=True, source='storetable_set', read_only=True)
 
     class Meta:
         model = Store
