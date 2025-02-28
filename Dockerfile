@@ -1,49 +1,29 @@
-FROM ubuntu:20.04 as base-image
-
+FROM debian:bookworm
+SHELL ["/bin/bash", "-c"]
 ENV TZ=UTC
-ENV DEBIAN_FRONTEND=nointeractive
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ARG DEBIAN_FRONTEND=nointeractive
+ENV PYTHONBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-RUN apt-get update && apt-get install build-essential wget make libxt6 libdbus-1-3 libdbus-1-dev \
-    unzip curl python3 python3-pip \
-    libssl-dev libffi-dev libpq-dev gcc git -y
+RUN apt-get update && apt-get upgrade -y && apt-get install build-essential \
+    wget make unzip curl gcc git libxt6 libdbus-1-3 libdbus-1-dev libssl-dev \
+    libffi-dev libpq-dev -y
 
-# Download + Install Miniconda
-RUN wget -P /tmp https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh
-RUN bash /tmp/Miniconda3-py38_4.12.0-Linux-x86_64.sh -b -p /home/sari-api/miniconda
-
-ENV PATH="/home/sari-api/miniconda/bin:$PATH"
-
-RUN conda update -n base -c defaults conda
-
-RUN conda config --set auto_activate_base true
-
-FROM base-image as builder
-
-ENV PATH="$PATH:/home/sari-api/miniconda/envs/base/bin"
-
-FROM builder as deps
+# install uv (https://docs.astral.sh/uv/) instead of conda
+RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.6.3/uv-installer.sh | sh
+ENV PATH="/root/.local/bin/:$PATH"
+RUN uv python install 3.12
 
 WORKDIR /app
+RUN uv venv /opt/venv
+# Use the virtual environment automatically
+ENV VIRTUAL_ENV=/opt/venv
+# Place entry points in the environment at the front of the path
+ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt /app/requirements.txt
-
-WORKDIR /app
-# Installing dependencies
-
-RUN pip3 install gunicorn
-
-RUN pip3 install -r requirements.txt
-
-RUN pip install gunicorn
-
-RUN pip install -r requirements.txt
-
-FROM deps as final
+RUN uv pip install -r requirements.txt
 
 COPY . /app
-
 RUN chmod +x /app/.deploy/entrypoint.sh
-
-CMD ["sh", "/app/.deploy/entrypoint.sh"]
+CMD ["bash", "/app/.deploy/entrypoint.sh"]
