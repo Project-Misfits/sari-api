@@ -7,7 +7,7 @@ from stores.models import Store
 
 class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True)
     updated_on = models.DateTimeField(auto_now=True)
