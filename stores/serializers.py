@@ -19,25 +19,23 @@ class StoreTableSerializer(serializers.ModelSerializer):
 
 
 class StoreSerializer(serializers.ModelSerializer):
-    tables = StoreTableSerializer(many=True, source='storetable_set')
+    tables = StoreTableSerializer(many=True, source='storetable_set', read_only=True)
 
     class Meta:
         model = Store
         fields = '__all__'
         include = ('tables',)
         read_only_fields = ['deleted_on']
-
-
-class GenerateTableQRCodeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StoreTable
-        fields = '__all__'
-        read_only_fields = ['deleted_on']
-
-    def partial_update(self, instance, validated_data):
-        try:
-            validated_data['qr_code_base64'] = base64_qr_code(instance)
-        except Exception as e:
-            print(e)
-            pass
-        return super().update(instance, validated_data)
+# class GenerateTableQRCodeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = StoreTable
+#         fields = '__all__'
+#         read_only_fields = ['deleted_on']
+#
+#     def update(self, instance, validated_data):
+#         try:
+#             validated_data['qr_code_base64'] = base64_qr_code(instance)
+#         except Exception as e:
+#             print(e)
+#             pass
+#         return super().update(instance, validated_data)

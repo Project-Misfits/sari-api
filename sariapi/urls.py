@@ -41,6 +41,8 @@ urlpatterns = [
     # custom views
     path('user/', include('users.urls')),
     path('store/', include('stores.urls')),
+    path('product/', include('products.urls')),
+    path('categories/', include('categories.urls')),
 
     # swagger stuff
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

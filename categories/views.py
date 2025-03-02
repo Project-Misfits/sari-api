@@ -4,15 +4,15 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Category
+from .serializers import CategorySerializer
 
 
-class ProductApiView(viewsets.ModelViewSet):
+class CategoryApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProductSerializer
+    serializer_class = CategorySerializer
 
-    queryset = Product.objects.filter(deleted_on=None)
+    queryset = Category.objects.filter(deleted_on=None)
 
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
