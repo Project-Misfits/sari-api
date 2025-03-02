@@ -15,4 +15,4 @@ class Category(models.Model):
     deleted_on = models.DateTimeField(blank=True, null=True, default=None)
 
     class Meta:
-        db_table = 'categories'
+        verbose_name_plural = 'categories'

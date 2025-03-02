@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from .models import Store, StoreTable
 
+from categories.serializers import CategorySerializer
+
 from .utils import base64_qr_code
 
 
@@ -20,11 +22,12 @@ class StoreTableSerializer(serializers.ModelSerializer):
 
 class StoreSerializer(serializers.ModelSerializer):
     tables = StoreTableSerializer(many=True, source='storetable_set', read_only=True)
+    categories = CategorySerializer(many=True, source='category_set', read_only=True)
 
     class Meta:
         model = Store
         fields = '__all__'
-        include = ('tables',)
+        include = ('tables', 'categories',)
         read_only_fields = ['deleted_on']
 # class GenerateTableQRCodeSerializer(serializers.ModelSerializer):
 #     class Meta:
