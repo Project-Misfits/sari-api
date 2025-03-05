@@ -20,7 +20,6 @@ class ProductApiView(viewsets.ModelViewSet):
     # In the future, we can update the return if no store id to all products
     def get_queryset(self, *args, **kwargs):
         store_id = self.request.query_params.get('store', None)
-        print(store_id)
         if store_id:
             return Product.objects.filter(store=store_id, deleted_on=None)
         return Product.objects.none()

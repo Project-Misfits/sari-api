@@ -13,7 +13,8 @@ class StoreApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = StoreSerializer
 
-    queryset = Store.objects.filter(deleted_on=None)
+    def get_queryset(self, *args, **kwargs):
+        return Store.objects.filter(creator=self.request.user, deleted_on=None)
 
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
@@ -26,7 +27,11 @@ class StoreTableApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = StoreTableSerializer
 
-    queryset = StoreTable.objects.filter(deleted_on=None)
+    def get_queryset(self, *args, **kwargs):
+        store_id = self.request.query_params.get('store', None)
+        if store_id:
+            return StoreTable.objects.filter(store=store_id, deleted_on=None)
+        return StoreTable.objects.none()
 
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()

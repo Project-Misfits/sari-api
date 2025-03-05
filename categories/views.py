@@ -12,7 +12,11 @@ class CategoryApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
 
-    queryset = Category.objects.filter(deleted_on=None)
+    def get_queryset(self, *args, **kwargs):
+        store_id = self.request.query_params.get('store', None)
+        if store_id:
+            return Category.objects.filter(store=store_id, deleted_on=None)
+        return Category.objects.none()
 
     def destroy(self, request, *args, **kwargs):
         qs = self.get_object()
