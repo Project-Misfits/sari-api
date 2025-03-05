@@ -14,7 +14,7 @@ class ProductApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['categories__name']
+    filterset_fields = ['categories__name', 'store']
 
     queryset = Product.objects.filter(deleted_on=None)
 
